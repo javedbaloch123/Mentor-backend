@@ -114,6 +114,9 @@
                 dataType: 'json',
                 contentType: false,
                 processData: false,
+                beforeSend:function(){
+                      $('#editForm :input').prop('disabled',true);
+                },
                 success: function(response) {
                      if(response.status === false){
 
@@ -135,9 +138,14 @@
                     }
                      }
                      else{
+                        $('#editForm')[0].reset();
                     	window.location.href = '{{ route("courses") }}';
                      }
 
+                },
+              
+                complete:function(){
+                      $('#editForm :input').prop('disabled',false);
                 }
 
             });

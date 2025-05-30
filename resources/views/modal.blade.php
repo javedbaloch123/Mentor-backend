@@ -132,6 +132,9 @@
 				dataType: 'json',
 				contentType: false,
 				processData: false,
+				beforeSend:function(){
+                    $('#trainerForm :input').prop('disabled',true);
+				},
 				success: function(response){
 					 if(response.status === false){
                           let errors = response.error;
@@ -153,7 +156,12 @@
 					 }else{
 						 window.location.reload();
 					 }
+				},
+
+				complete:function(){
+					 $('#trainerForm').prop('disabled',false);
 				}
+
 
 			});
 		});
