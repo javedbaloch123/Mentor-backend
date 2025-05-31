@@ -4,15 +4,20 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Middleware\AuthenticateUser;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login',[AuthController::class, 'index'])->name('admin.login');
+Route::post('/process-login',[AuthController::class, 'processLogin'])->name('process.login');
+ 
+
+Route::middleware(AuthenticateUser::class)->group(function(){
+
+Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
 Route::get('/register',[AuthController::class, 'register'])->name('admin.register');
 Route::post('/process-register',[AuthController::class, 'process'])->name('process.form');
-Route::post('/process-login',[AuthController::class, 'processLogin'])->name('process.login');
 
-
-Route::get('/',[AdminController::class, 'index'])->name('admin.pannel');
+Route::get('/',[AdminController::class, 'index'])->name('admin.pannel'); 
 Route::get('/courses',[CourseController::class, 'index'])->name('courses');
 Route::get('/trainers',[TrainerController::class, 'index'])->name('trainers');
 
@@ -26,6 +31,10 @@ Route::get('/delete-course/{id}',[CourseController::class, 'destroy'])->name('de
 Route::get('/edit-trainer/{id}',[TrainerController::class, 'edit'])->name('edit.trainer');
 Route::post('/update-trainer',[TrainerController::class, 'update'])->name('update.trainer');
 Route::get('/delete-trainer/{id}',[TrainerController::class, 'destroy'])->name('delete.trainer');
+
+});
+
+ 
 
  
 

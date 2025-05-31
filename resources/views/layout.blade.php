@@ -77,17 +77,23 @@
 							<span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
 						</div>
 					</div>
-					 
+					 <a href="{{ route('admin.register') }}"><button class="btn btn-primary">Register</button></a>
 					<div class="user-box dropdown">
 						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							 
 							<div class="user-info ps-3">
-								<p class="user-name mb-0">Pauline Seitz</p>
-								<p class="designattion mb-0">Admin</p>
+								<p class="user-name mb-0">{{ Auth::user()->name }}</p>
+								@if (Auth::user()->role == 1)
+									<p class="designattion mb-0">Admin</p>
+
+									 @else
+									 	<p class="designattion mb-0">User</p>
+								@endif
+								 
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+							<li><a class="dropdown-item" href="{{ route('logout') }}"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
 							</li>
 						</ul>
 					</div>

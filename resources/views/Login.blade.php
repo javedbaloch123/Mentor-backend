@@ -22,19 +22,23 @@
                 <div class="card">
                     <div class="card-body p-4">
                         <h5 class="mb-4">Login</h5>
+                        <div style="display: none" class="alert alert-danger" id="invalid" role="alert">
+
+                        </div>
+
                         <form class="row g-3" id="loginForm" name="loginForm">
                             @csrf
                             <div class="col-md-12">
                                 <label for="input4" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="Email">
-                                    <p></p>
+                                <p></p>
                             </div>
-                               <div class="col-md-12">
+                            <div class="col-md-12">
                                 <label for="input4" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="password">
-                                    <p></p>
+                                <p></p>
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
@@ -55,20 +59,21 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 
-    	<script src="{{ asset("assets/js/jquery.min.js") }}"></script>
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 
-        <script>
-            $("#loginForm").submit((e)=>{
-                e.preventDefault();
+    <script>
+        // $('#invalid').hide();
+        $("#loginForm").submit((e) => {
+            e.preventDefault();
 
-                $.ajax({
-                    url: "{{ route('process.login') }}",
-                    type:'post',
-                    data:$('#loginForm').serialize(),
-                    dataType: 'json',
-                    success:function(response){
-                        console.log(response);
-                         if (response.status === false) {
+            $.ajax({
+                url: "{{ route('process.login') }}",
+                type: 'post',
+                data: $('#loginForm').serialize(),
+                dataType: 'json',
+                success: function(response) {
+                     console.log(response);
+                    if (response.status === false) {
 
                         let errors = response.error;
                         let keys = ['email', 'password'];
@@ -80,20 +85,23 @@
                         for (let key in errors) {
                             if (errors.hasOwnProperty(key)) {
                                 // Add is-invalid class
-                             
+
                                 $(`#${key}`).addClass('is-invalid');
                                 $(`#${key}`).next('p').text(errors[key][0]).css('color', 'red');
 
                             }
                         }
+                    } else if (response.status === 'error') {
+                        $('#invalid').show();
+                        $('#invalid').text(response.message);
                     } else {
-                            
-                        window.location.href = '{{ route("admin.pannel") }}';
+
+                        window.location.href = '{{ route('admin.pannel') }}';
                     }
-                    }
-                })
+                }
             })
-        </script>
+        })
+    </script>
 </body>
 
 </html>

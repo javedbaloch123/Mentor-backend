@@ -69,18 +69,26 @@ class AuthController extends Controller
 
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
             
-             $role = Auth::user()->role;
-             if($role == 1){
-              return response()->json([
+            return response()->json([
                 'status'=>true,
-                'role'=>$role
              ]);
-             }
              
+        } else{
+             return response()->json([
+                'status'=>"error",
+                'message'=>'invalid credentials'
+             ]);
         }
 
         
 
            
+    }
+
+
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('admin.login');
     }
 }
