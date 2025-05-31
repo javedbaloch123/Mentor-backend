@@ -22,21 +22,23 @@
                 <div class="card">
                     <div class="card-body p-4">
                         <h5 class="mb-4">Login</h5>
-                        <form class="row g-3">
-                            
+                        <form class="row g-3" id="loginForm" name="loginForm">
+                            @csrf
                             <div class="col-md-12">
                                 <label for="input4" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="Email">
+                                    <p></p>
                             </div>
                                <div class="col-md-12">
                                 <label for="input4" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
                                     placeholder="password">
+                                    <p></p>
                             </div>
                             <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="button" class="btn btn-primary px-4">Submit</button>
+                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -53,15 +55,45 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
-    </script>
-    -->
+    	<script src="{{ asset("assets/js/jquery.min.js") }}"></script>
+
+        <script>
+            $("#loginForm").submit((e)=>{
+                e.preventDefault();
+
+                $.ajax({
+                    url: "{{ route('process.login') }}",
+                    type:'post',
+                    data:$('#loginForm').serialize(),
+                    dataType: 'json',
+                    success:function(response){
+                        console.log(response);
+                         if (response.status === false) {
+
+                        let errors = response.error;
+                        let keys = ['email', 'password'];
+                        keys.forEach(element => {
+                            $(`#${element}`).removeClass('is-invalid');
+                            $(`#${element}`).next('p').text('');
+                        });
+
+                        for (let key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                // Add is-invalid class
+                             
+                                $(`#${key}`).addClass('is-invalid');
+                                $(`#${key}`).next('p').text(errors[key][0]).css('color', 'red');
+
+                            }
+                        }
+                    } else {
+                            
+                        window.location.href = '{{ route("admin.pannel") }}';
+                    }
+                    }
+                })
+            })
+        </script>
 </body>
 
 </html>

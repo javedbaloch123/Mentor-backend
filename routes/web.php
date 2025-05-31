@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login',[AuthController::class, 'index'])->name('admin.login');
 Route::get('/register',[AuthController::class, 'register'])->name('admin.register');
 Route::post('/process-register',[AuthController::class, 'process'])->name('process.form');
+Route::post('/process-login',[AuthController::class, 'processLogin'])->name('process.login');
 
 
 Route::get('/',[AdminController::class, 'index'])->name('admin.pannel');
